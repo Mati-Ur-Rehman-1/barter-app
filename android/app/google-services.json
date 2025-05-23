@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "520503104733",
+    "project_id": "online-barter-df181",
+    "storage_bucket": "online-barter-df181.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520503104733:android:ef84d62edc8f73218ab734",
+        "android_client_info": {
+          "package_name": "com.example.online_barter_marketplace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJcK7sWdNe9Og7NByS0j3wP3GF0b323g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
