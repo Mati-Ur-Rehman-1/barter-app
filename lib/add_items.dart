@@ -1,10 +1,10 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:online_barter_marketplace/main_navigation.dart';
 import 'user model.dart';
 import 'delete_products.dart';
 
@@ -19,21 +19,22 @@ class AddItemPage extends StatefulWidget {
 
 class _AddItemPageState extends State<AddItemPage> {
   final _database = FirebaseDatabase.instance.ref();
-  final ImagePicker _picker = ImagePicker();
+  final  _picker = ImagePicker();
+
   XFile? _image;
   String? _base64Image;
   Uint8List? _imageBytes;
+  String? selectedCategory;
+  String? selectedCondtion;
+
 
 
   final itemName = TextEditingController();
   final descripton = TextEditingController();
-  final category = TextEditingController();
-  final condition = TextEditingController();
-  final unit = TextEditingController();
+   final category = TextEditingController();
+   final condition = TextEditingController();
   final city = TextEditingController();
-  final purchaseprice = TextEditingController();
-  final taxin = TextEditingController();
-  final taxinprice = TextEditingController();
+
 
   Future<void> _pickImage() async {
     final picked = await _picker.pickImage(source: ImageSource.gallery);
@@ -55,11 +56,7 @@ class _AddItemPageState extends State<AddItemPage> {
         descripton: descripton.text,
         category: category.text,
         condition: condition.text,
-        unit: unit.text,
         city: city.text,
-        purchaseprice: purchaseprice.text,
-        taxin: taxin.text,
-        taxinprice: taxinprice.text,
         image: _base64Image ?? "",
       );
       await _database.child('products').child(widget.entry!.uid).set(user.toMap()).then((_){
@@ -72,13 +69,9 @@ class _AddItemPageState extends State<AddItemPage> {
           uid: uid,
           itemname: itemName.text,
           descripton: descripton.text,
-          category: category.text,
-          condition: condition.text,
-          unit: unit.text,
+           category: selectedCategory!,
+           condition: selectedCondtion!,
           city: city.text,
-          purchaseprice: purchaseprice.text,
-          taxin: taxin.text,
-          taxinprice: taxinprice.text,
           image: _base64Image ?? "",
         );
 
@@ -88,7 +81,19 @@ class _AddItemPageState extends State<AddItemPage> {
           SnackBar(content: Text("Product saved successfully!")),
         );
 
-        Navigator.pop(context);
+// Safely navigate back or replace the screen
+        Future.delayed(Duration(milliseconds: 300), () {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainNavigation()), // Replace with your actual screen
+            );
+          }
+        });
+
       } catch (e) {
         print("Error saving product: $e");
         ScaffoldMessenger.of(context).showSnackBar(
@@ -106,11 +111,7 @@ class _AddItemPageState extends State<AddItemPage> {
       descripton.text = item.descripton;
       category.text = item.category;
       condition.text = item.condition;
-      unit.text = item.unit;
       city.text = item.city;
-      purchaseprice.text = item.purchaseprice;
-      taxin.text = item.taxin;
-      taxinprice.text = item.taxinprice;
       if (item.image.isNotEmpty) {
         try {
           _base64Image = item.image;
@@ -128,7 +129,7 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Add Item",style: TextStyle(color: Colors.white),),
-          backgroundColor: Colors.purple, centerTitle: true),
+          backgroundColor: Colors.teal, centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -191,134 +192,63 @@ class _AddItemPageState extends State<AddItemPage> {
                 ),
               ),
             ),
+
+      Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: DropdownButtonFormField<String>(
+        value: selectedCategory,
+        decoration: InputDecoration(
+          labelText: 'Category',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        items: ['English', 'Poetry', 'Novel'].map((String category) {
+          return DropdownMenuItem<String>(
+            value: category,
+            child: Text(category),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedCategory = newValue!;
+          });
+        },
+      ),
+    ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: DropdownButtonFormField<String>(
+                value: selectedCondtion,
+                decoration: InputDecoration(
+                  labelText: 'Condition',
+                  hintText: 'rate out o 10',
+
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                items: ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1'].map((String condition) {
+                  return DropdownMenuItem<String>(
+                    value: condition,
+                    child: Text(condition),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedCondtion = newValue!;
+                  });
+                },
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: TextField(
-                controller: category,
+                controller: city,
                 decoration: InputDecoration(
-                  labelText: "Category",
+                  labelText: "location",
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  suffixIcon: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (String value) {
-                      category.text = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return ['Bikes', 'Clothes', 'Laptops'].map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(choice),
-                        );
-                      }).toList();
-                    },
-                  ),
                 ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: condition,
-                      decoration: InputDecoration(
-                        labelText: "condition",
-                        hintText: " 'write condition like'  _/10",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12,),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: unit,
-                      decoration: InputDecoration(
-                        labelText: "Unit",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        suffixIcon: PopupMenuButton<String>(
-                          icon: const Icon(Icons.arrow_drop_down),
-                          onSelected: (String value) {
-                            unit.text = value;
-                          },
-                          itemBuilder: (BuildContext context) {
-                            return ['Pcs', 'Bundles'].map((String choice) {
-                              return PopupMenuItem<String>(
-                                value: choice,
-                                child: Text(choice),
-                              );
-                            }).toList();
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: city,
-                      decoration: InputDecoration(
-                        labelText: "City",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12,),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: purchaseprice,
-                      decoration: InputDecoration(
-                        labelText: "Purchase Price",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
 
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: taxin,
-                      decoration: InputDecoration(
-                        labelText: "Tax in %",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12,),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: TextField(
-                      controller: taxinprice,
-                      decoration: InputDecoration(
-                        labelText: "Tax in Price",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-
-              ],
-            ),
             Row(
               children: [
                 Text("Delete any previously added item",style: TextStyle(
@@ -333,12 +263,12 @@ class _AddItemPageState extends State<AddItemPage> {
                 Container(
                   width: 100,
                   height: 35,
-                 child: ElevatedButton(onPressed: (){    Navigator.push(context, MaterialPageRoute(builder: (_) => DeleteProductsPage()));
+                  child: ElevatedButton(onPressed: (){    Navigator.push(context, MaterialPageRoute(builder: (_) => DeleteProductsPage()));
                   },
-                     child: Text("Click Here",style: TextStyle(color: Colors.black, fontSize: 10,
-                      fontWeight:FontWeight.bold
+                      child: Text("Click Here",style: TextStyle(color: Colors.black, fontSize: 10,
+                          fontWeight:FontWeight.bold
 
-                  ),)),
+                      ),)),
 
 
                 )],
@@ -351,9 +281,12 @@ class _AddItemPageState extends State<AddItemPage> {
         onPressed: _saveToDatabase,
         label: const Text("Save",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold) ,),
         icon: const Icon(Icons.save_outlined,color: Colors.white,),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.teal,
       ),
+
     );
   }
 
 }
+
+

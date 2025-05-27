@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_barter_marketplace/delete_products.dart';
+import 'package:online_barter_marketplace/profile.dart';
 import 'uiside.dart';
 import 'add_items.dart';
 //import 'profile_page.dart';
@@ -15,8 +16,8 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _pages = [
     ProductInventory(),         // Your main product list page
     AddItemPage(entry: null),   // Add new item page
-    //ProfilePage(),
-     DeleteProductsPage(),
+    DeleteProductsPage(),
+    ManageProfileScreen(),
   ];
 
   @override
@@ -26,7 +27,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Colors.teal,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() {
@@ -56,3 +57,4 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
+

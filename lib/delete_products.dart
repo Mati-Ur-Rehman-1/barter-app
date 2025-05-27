@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -58,7 +57,7 @@ class _DeleteProductsPageState extends State<DeleteProductsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Delete / Edit Products",style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.teal,
       ),
       body: _productsWithKeys.isEmpty
           ? Center(child: CircularProgressIndicator())

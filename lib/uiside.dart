@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _ProductInventoryState extends State<ProductInventory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Barter Maketplace",style: TextStyle(color: Colors.white),), centerTitle: true,backgroundColor: Colors.purple,),
+      appBar: AppBar(title: Text("Book Share",style: TextStyle(color: Colors.white),), centerTitle: true,backgroundColor: Colors.teal,),
       body: Column(
         children: [
           Padding(
@@ -56,7 +55,7 @@ class _ProductInventoryState extends State<ProductInventory> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: ["All Items", "Bikes", "Clothes", "Laptops"].map((category) {
+                children:["All Items",'English', 'Poetry', 'Novel'].map((category) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: ChoiceChip(
@@ -89,78 +88,78 @@ class _ProductInventoryState extends State<ProductInventory> {
                 final product = filteredProducts[index];
                 //final imageBytes = base64Decode(product.image);
 
-                 return
-                InkWell(
-                    onTap: () {
-                  Navigator.push(
-                    context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductDetailPage(product: product),
-                      ));
-                  //   MaterialPageRoute(builder: (_) => AddItemPage(entry: product)),
-                  // ).then((_) => fetchProducts());
-                },
-                child:
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  elevation: 3,
-                  child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                          child: Image.memory(
-                            base64Decode(product.image),
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(6),
+                return
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailPage(product: product),
+                            ));
+                        //   MaterialPageRoute(builder: (_) => AddItemPage(entry: product)),
+                        // ).then((_) => fetchProducts());
+                      },
+                      child:
+                      Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        elevation: 3,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(product.itemname,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                            // Text(product.descripton, style: TextStyle(fontSize: 12)),
-                            SizedBox(height: 6),
-                            Row(
-                              children: [
-                                Icon(Icons.location_on, size: 16, color: Colors.purple),
-                                Text( "${product.city}"),
-                                SizedBox(width: 4),]),
-                            // Container(
-                            //   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            //   decoration: BoxDecoration(
-                            //     color: Colors.green[100],
-                            //     borderRadius: BorderRadius.circular(4),
-                            //   ),
-                            //   child: Text(
-                            //     "${product.saleprice} PKR",
-                            //     style: TextStyle(
-                            //         color: Colors.green[800],
-                            //         fontWeight: FontWeight.bold),
-                            //   ),
-                            // ),
-                            SizedBox(height: 6),
-                            Row(
-                              children: [
-                                Icon(Icons.add_task, size: 16, color: Colors.purple),
-                                SizedBox(width: 4),
-                                Text("Condition: ${product.condition}", style: TextStyle(fontSize: 12)),
-                              ],
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                child: Image.memory(
+                                  base64Decode(product.image),
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(6),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(product.itemname,
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis),
+                                  // Text(product.descripton, style: TextStyle(fontSize: 12)),
+                                  SizedBox(height: 6),
+                                  Row(
+                                      children: [
+                                        Icon(Icons.location_on, size: 16, color: Colors.teal),
+                                        Text( "${product.city}"),
+                                        SizedBox(width: 4),]),
+                                  // Container(
+                                  //   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.green[100],
+                                  //     borderRadius: BorderRadius.circular(4),
+                                  //   ),
+                                  //   child: Text(
+                                  //     "${product.saleprice} PKR",
+                                  //     style: TextStyle(
+                                  //         color: Colors.green[800],
+                                  //         fontWeight: FontWeight.bold),
+                                  //   ),
+                                  // ),
+                                  SizedBox(height: 6),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.add_task, size: 16, color: Colors.teal),
+                                      SizedBox(width: 4),
+                                      Text("Condition: ${product.condition}", style: TextStyle(fontSize: 12)),
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
                       )
-                    ],
-                  ),
-                )
-                );
+                  );
 
               },
             ),
@@ -175,9 +174,8 @@ class _ProductInventoryState extends State<ProductInventory> {
       //
       //   },
       //   child: Icon(Icons.add,color: Colors.white),
-      //   backgroundColor: Colors.purple,
+      //   backgroundColor: Colors.teal,
       // ),
     );
   }
 }
-

@@ -13,7 +13,7 @@ class ProductDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.itemname,style:   TextStyle(color: Colors.white), ),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -30,7 +30,7 @@ class ProductDetailPage extends StatelessWidget {
                   // SizedBox(height: 10),
                   Text("City: ${product.city}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  Text("Condition: ${product.condition}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text("Condition: ${product.condition}/10", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   RichText(
                     text: TextSpan(
@@ -42,22 +42,45 @@ class ProductDetailPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.chat,color: Colors.white,),
+                    label: Text("Chat",),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors. blueGrey,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      // Future feature: Navigate to chat screen with product.sellerId
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Chat feature coming soon!"))
+                      );
+                    },
+                  ),
+                  SizedBox(height: 30,),
                   Center(
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.chat,color: Colors.white,),
-                      label: Text("Chat with me",),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        textStyle: TextStyle(fontSize: 16),
+                    child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                      children: [
+                       ElevatedButton( onPressed: () {}, child: Text("Buy Now"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                          textStyle: TextStyle(fontSize: 16),
+                        ),
                       ),
-                      onPressed: () {
-                        // Future feature: Navigate to chat screen with product.sellerId
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Chat feature coming soon!"))
-                        );
-                      },
+                        Text("   or   "),
+                        ElevatedButton( onPressed: () {}, child: Text("Borrow"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                            textStyle: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                       ]
                     ),
                   )
                 ],
@@ -69,3 +92,4 @@ class ProductDetailPage extends StatelessWidget {
     );
   }
 }
+
